@@ -1,0 +1,241 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package EE333;
+
+/**
+ *
+ * @author Brooks
+ */
+public class EmployeeJPanel extends javax.swing.JPanel {
+
+    
+    private EmployeeInfo employeeInfo;
+    
+    public EE333.EmployeeInfo getEmployeeInfo() {
+        return( this.employeeInfo );
+    }
+    
+    public void setEmployeeInfo( EE333.EmployeeInfo employeeInfo ) {
+        this.employeeInfo = employeeInfo;
+    }
+    
+    public String returnEmployeeID() {
+        return( this.jTextID.getText() );
+    }
+    
+    /**
+     * Creates new form EmployeeJPanel
+     */
+    public EmployeeJPanel() {
+        initComponents();
+        java.io.File InputFile;
+        
+        this.jComboStatus.removeAllItems();
+        for (Status status : EE333.Status.values() ) {
+            this.jComboStatus.addItem( status.toString() );
+            
+        }
+        
+//        InputFile = new java.io.File("Employee1.txt");
+//        this.importCustom(InputFile); 
+    }
+    
+    public boolean importCustom( java.io.File customFile ) {
+        // accept a .user file
+        boolean results = true;
+        String contents = "";
+        
+        contents = importString(customFile);
+        if (contents == "" ) {
+            // this means no string was found ( or no file was found )
+            results = false;
+        } else {
+            // we want to parse the contents of the file...
+            if (importCustom(contents) == false) {
+                results = false;
+            } else {
+                results = true; // we need to update our GUI (potentially)
+                
+            }
+        }
+        
+        return( results );
+    } 
+    
+    public boolean importCustom( String customString ) {
+        boolean results = true;
+        // User tempUser;
+        
+        this.employeeInfo = EE333.EmployeeInfo.importCustom(customString);
+        
+        if(this.employeeInfo.getStatus() == EE333.Status.unknown) {
+            this.jTextID.setText("");
+            this.jTextFirstName.setText("");
+            this.jTextLastName.setText("");
+            this.jComboStatus.setSelectedItem(this.employeeInfo.getStatus());
+            results = false;
+        } else {
+            // we need to update our GUI...
+            this.jTextID.setText(this.employeeInfo.getID());
+            this.jTextFirstName.setText(this.employeeInfo.getFirstName());
+            this.jTextLastName.setText(this.employeeInfo.getLastName());
+            this.jComboStatus.setSelectedItem( this.employeeInfo.getStatus().toString() );
+            
+            //this.contactInfoJpanel1.setContactInfo(this.user.getContactInfo());
+            //this.contactInfoJpanel1.updateControls();
+            
+            results = true;
+        }
+        
+        return( results );
+    }
+    
+    private String importString( java.io.File inputFile ) {
+        String results = "";
+        String line = "";
+        java.io.FileReader inputFileReader;
+        java.io.BufferedReader inputBufferedReader;       
+        
+        try {
+            if (inputFile.exists() == true) {
+                inputFileReader = new java.io.FileReader(inputFile);
+                inputBufferedReader = new java.io.BufferedReader(inputFileReader);
+                
+                while ((line = inputBufferedReader.readLine()) != null) {
+                    results += line + '\n'; // appends the contents line by line.
+                }
+                
+                inputBufferedReader.close();
+            } else {
+                results = "";
+            }
+        } catch (java.lang.Exception ex) {
+            System.out.println( ex.toString() );
+        }
+        
+        return( results );
+    } 
+    
+    public boolean updateControls() {
+        boolean results = true;
+        
+        this.jTextID.setText( this.employeeInfo.getID() );
+        this.jTextFirstName.setText( this.employeeInfo.getFirstName() );
+        this.jTextLastName.setText( this.employeeInfo.getLastName());
+        this.jComboStatus.setSelectedItem( this.employeeInfo.getStatus().toString() );
+        
+        return( results );
+    }
+    
+    public boolean updateUnderlyingObject() {
+        boolean results = true;
+        
+        // need a way to set the ID without using setID()!
+        this.employeeInfo = new EmployeeInfo( jTextID.getText(), jTextFirstName.getText(), jTextLastName.getText());
+        this.employeeInfo.setStatus( EE333.Status.valueOf( this.jComboStatus.getSelectedItem().toString() ) );
+//        this.employeeInfo.setFirstName( this.jTextFirstName.getText() );
+//        this.employeeInfo.setLastName( this.jTextLastName.getText() );
+        
+        return( results );
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextID = new javax.swing.JTextField();
+        jTextFirstName = new javax.swing.JTextField();
+        jTextLastName = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jComboStatus = new javax.swing.JComboBox<>();
+
+        jLabel1.setText("Employee");
+
+        jLabel2.setText("ID");
+
+        jLabel3.setText("FirstName");
+
+        jLabel4.setText("LastName");
+
+        jTextFirstName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFirstNameActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Status");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTextID)
+                    .addComponent(jTextFirstName)
+                    .addComponent(jTextLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                    .addComponent(jComboStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jTextLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jComboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFirstNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFirstNameActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> jComboStatus;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField jTextFirstName;
+    private javax.swing.JTextField jTextID;
+    private javax.swing.JTextField jTextLastName;
+    // End of variables declaration//GEN-END:variables
+}
